@@ -56,26 +56,23 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (_, constraints) {
-        // Remove any open menus when we resize (common behavior, and avoids edge cases / complexity)
-        _nullMenuIfOverlayWasResized(constraints);
-        // Offset the menu depending on which quadrant of the app we're in, this will make sure it always stays in bounds.
-        double dx = 0, dy = 0;
-        if (_mousePos.dx > (_prevSize?.width ?? 0) / 2) dx = -_menuSize.width;
-        if (_mousePos.dy > (_prevSize?.height ?? 0) / 2) dy = -_menuSize.height;
-        // The final menuPos, is mousePos + quadrant offset
-        Offset _menuPos = _mousePos + Offset(dx, dy);
-        Widget? menuToShow = _currentMenu;
-
-        return _InheritedContextMenu(
-          state: this,
-          child: Scaffold(
-            body: MouseRegion(
-              // Track mousePos so we always know where the click occurred (this saves the child needing to pass it)
-              onHover: (event) => _mousePos = event.localPosition,
-              // Listen for Notifications coming up from the app
-              child: Stack(
+    return Listener(
+      onPointerDown: (e) => _mousePos = e.localPosition,
+      child: LayoutBuilder(
+        builder: (_, constraints) {
+          // Remove any open menus when we resize (common behavior, and avoids edge cases / complexity)
+          _nullMenuIfOverlayWasResized(constraints);
+          // Offset the menu depending on which quadrant of the app we're in, this will make sure it always stays in bounds.
+          double dx = 0, dy = 0;
+          if (_mousePos.dx > (_prevSize?.width ?? 0) / 2) dx = -_menuSize.width;
+          if (_mousePos.dy > (_prevSize?.height ?? 0) / 2) dy = -_menuSize.height;
+          // The final menuPos, is mousePos + quadrant offset
+          Offset _menuPos = _mousePos + Offset(dx, dy);
+          Widget? menuToShow = _currentMenu;
+          return _InheritedContextMenu(
+            state: this,
+            child: Scaffold(
+              body: Stack(
                 children: [
                   // Child is the contents of the overlay, usually the entire app.
                   widget.child,
@@ -99,6 +96,7 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
                         opacity: _menuSize != Size.zero ? 1 : 0,
                         // Use a measure size widget so we can offset the child properly
                         child: MeasuredSizeWidget(
+                          key: ObjectKey(menuToShow),
                           onChange: _handleMenuSizeChanged,
                           child: IntrinsicWidth(child: IntrinsicHeight(child: menuToShow)),
                         ),
@@ -108,9 +106,9 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
                 ],
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 

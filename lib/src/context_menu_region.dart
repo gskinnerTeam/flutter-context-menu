@@ -1,5 +1,6 @@
 // Helper widget, to dispatch Notifications when a right-click is detected on some child
 import 'package:flutter/widgets.dart';
+
 import '../context_menus.dart';
 
 /// Wraps any widget in a GestureDetector and calls [ContextMenuOverlay].show
@@ -13,7 +14,11 @@ class ContextMenuRegion extends StatelessWidget {
   final bool enableLongPress;
   @override
   Widget build(BuildContext context) {
-    void showMenu() => context.contextMenuOverlay.show(contextMenu);
+    void showMenu() {
+      // calculate widget position on screen
+      context.contextMenuOverlay.show(contextMenu);
+    }
+
     if (isEnabled == false) return child;
     return GestureDetector(
       behavior: HitTestBehavior.translucent,

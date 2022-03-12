@@ -1,10 +1,12 @@
 # context_menus
 A package to show context menus on right-click or long-press.
 
+<img src="http://screens.gskinner.com/shawn/0tVhpe5OY2.gif" alt="" />
+
 ## 🔨 Installation
 ```yaml
 dependencies:
-  context_menus: ^0.1.0
+  context_menus: ^1.0.1
 ```
 
 ### ⚙ Import
@@ -15,7 +17,7 @@ import 'package:context_menus/context_menus.dart';
 
 ## 🕹️ Usage
 
-To get started, wrap a `ContextMenuOverlay` around your main app or top-most view:
+To get started, wrap a `ContextMenuOverlay` around your top-most view or app:
 
 ```
 return ContextMenuOverlay(
