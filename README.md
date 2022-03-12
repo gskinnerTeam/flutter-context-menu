@@ -19,14 +19,14 @@ import 'package:context_menus/context_menus.dart';
 
 To get started, wrap a `ContextMenuOverlay` around your top-most view or app:
 
-```
+```dart
 return ContextMenuOverlay(
   child: MaterialApp(...)
 );
 ```
 
 You can then use the `ContextMenuRegion` widget to tag sections of the Widget tree that should trigger a context menu.
-```
+```dart
 /// Example hyperlink menu
 return ContextMenuRegion(
   contextMenu: LinkContextMenu(url: 'http://flutter.dev'),
@@ -88,7 +88,7 @@ context.contextMenuOverlay.hide();
 
 ## 💡 Custom Menus
 The easiest way to create a custom menu is to use the `GenericContextMenu`. Just pass it a list of `ContextMenuButtonConfig` instances:
-```
+```dart
 /// Custom Context Menu for an Image
 ContextMenuRegion(
   contextMenu: GenericContextMenu(
