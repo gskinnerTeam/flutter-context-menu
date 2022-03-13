@@ -33,13 +33,17 @@ class ContextMenuCard extends StatelessWidget {
   Widget build(BuildContext context) {
     Color shadowColor =
         Theme.of(context).textTheme.bodyText1?.color ?? Colors.black;
+    final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
     return ConstrainedBox(
       constraints: BoxConstraints(minWidth: 250),
       child: Container(
         padding: padding ?? EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
           color: bgColor ?? Theme.of(context).scaffoldBackgroundColor,
-          border: border ?? Border.all(color: Colors.grey.shade300),
+          border: border ??
+              (isDarkTheme
+                  ? Border.all(color: Theme.of(context).scaffoldBackgroundColor)
+                  : Border.all(color: Colors.grey.shade300)),
           borderRadius: borderRadius ?? BorderRadius.circular(4),
           boxShadow: shadows ??
               [

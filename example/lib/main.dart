@@ -110,9 +110,13 @@ class TestContent extends StatelessWidget {
 
           /// Example hyperlink menu
           ContextMenuRegion(
-            contextMenu: LinkContextMenu(url: 'http://flutter.dev'),
-            child:
-                TextButton(onPressed: () {}, child: Text("http://flutter.dev")),
+            contextMenu: LinkContextMenu(
+              url: 'http://flutter.dev',
+            ),
+            child: TextButton(
+              onPressed: () {},
+              child: Text("http://flutter.dev"),
+            ),
           ),
 
           /// Custom Context Menu for an Image
