@@ -7,12 +7,6 @@ void main() {
   runApp(const MyApp());
 }
 
-// Default menus, with icons or not
-// GenericContextMenu
-// Custom styling
-// Custom Builders
-// CustomViews
-
 class MyApp extends StatelessWidget {
   const MyApp({
     Key? key,
@@ -112,6 +106,7 @@ class TestContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
+      color: Colors.transparent,
       child: Column(
         children: [
           /// Example menu for non-selectable text
