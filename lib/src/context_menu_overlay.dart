@@ -1,7 +1,7 @@
 library context_menus;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 
 import 'widgets/context_menu_button.dart';
 import 'widgets/context_menu_card.dart';
@@ -21,6 +21,7 @@ class ContextMenuOverlay extends StatefulWidget {
     this.dividerBuilder,
     this.buttonStyle,
   }) : super(key: key);
+
   final Widget child;
 
   /// Builds a card that wraps all the buttons in the menu.
@@ -40,7 +41,9 @@ class ContextMenuOverlay extends StatefulWidget {
   ContextMenuOverlayState createState() => ContextMenuOverlayState();
 
   static ContextMenuOverlayState of(BuildContext context) =>
-      (context.dependOnInheritedWidgetOfExactType<_InheritedContextMenu>() as _InheritedContextMenu).state;
+      (context.dependOnInheritedWidgetOfExactType<_InheritedContextMenu>()
+              as _InheritedContextMenu)
+          .state;
 }
 
 class ContextMenuOverlayState extends State<ContextMenuOverlay> {
@@ -65,7 +68,8 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
           // Offset the menu depending on which quadrant of the app we're in, this will make sure it always stays in bounds.
           double dx = 0, dy = 0;
           if (_mousePos.dx > (_prevSize?.width ?? 0) / 2) dx = -_menuSize.width;
-          if (_mousePos.dy > (_prevSize?.height ?? 0) / 2) dy = -_menuSize.height;
+          if (_mousePos.dy > (_prevSize?.height ?? 0) / 2)
+            dy = -_menuSize.height;
           // The final menuPos, is mousePos + quadrant offset
           Offset _menuPos = _mousePos + Offset(dx, dy);
           Widget? menuToShow = _currentMenu;
@@ -78,15 +82,28 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
                   widget.child,
                   // Show the menu?
                   if (menuToShow != null) ...[
-                    Positioned.fill(child: Container(color: Colors.transparent)),
+                    Positioned.fill(
+                      child: ColoredBox(color: Colors.transparent),
+                    ),
 
                     /// Underlay, blocks all taps to the main content.
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onPanStart: (_) => close(),
-                      onTap: () => close(),
-                      onSecondaryTapDown: (_) => close(),
-                      child: Container(),
+                    FocusableActionDetector(
+                      shortcuts: {
+                        closeMenuKeySet: CloseMenuIntent(),
+                      },
+                      actions: {
+                        CloseMenuIntent: CallbackAction(
+                          onInvoke: (e) => close(),
+                        ),
+                      },
+                      autofocus: true,
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onPanStart: (_) => close(),
+                        onTap: () => close(),
+                        onSecondaryTapDown: (_) => close(),
+                        child: Container(),
+                      ),
                     ),
 
                     /// Position the menu contents
@@ -98,11 +115,13 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
                         child: MeasuredSizeWidget(
                           key: ObjectKey(menuToShow),
                           onChange: _handleMenuSizeChanged,
-                          child: IntrinsicWidth(child: IntrinsicHeight(child: menuToShow)),
+                          child: IntrinsicWidth(
+                            child: IntrinsicHeight(child: menuToShow),
+                          ),
                         ),
                       ),
                     ),
-                  ]
+                  ],
                 ],
               ),
             ),
@@ -140,10 +159,20 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
 
 /// InheritedWidget boilerplate
 class _InheritedContextMenu extends InheritedWidget {
-  _InheritedContextMenu({Key? key, required Widget child, required this.state}) : super(key: key, child: child);
+  _InheritedContextMenu({
+    Key? key,
+    required Widget child,
+    required this.state,
+  }) : super(key: key, child: child);
 
   final ContextMenuOverlayState state;
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => true;
 }
+
+class CloseMenuIntent extends Intent {}
+
+final closeMenuKeySet = LogicalKeySet(
+  LogicalKeyboardKey.escape,
+);

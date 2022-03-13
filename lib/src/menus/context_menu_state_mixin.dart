@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+
 import '../../context_menus.dart';
 
 /// Optional mixin for ContextMenu's. Provides:
@@ -16,16 +17,30 @@ mixin ContextMenuStateMixin<T extends StatefulWidget> on State<T> {
   ContextMenuOverlayState get overlay => ContextMenuOverlay.of(context);
 
   /// Receives a list of buttons, and should provide a background and layout for them.
-  ContextMenuCardBuilder get cardBuilder => overlay.cardBuilder ?? (_, children) => ContextMenuCard(children: children);
+  ContextMenuCardBuilder get cardBuilder =>
+      overlay.cardBuilder ??
+      (_, children, border, borderRadius, bgColor, shadows, padding) =>
+          ContextMenuCard(
+            children: children,
+            border: border,
+            borderRadius: borderRadius,
+            shadows: shadows,
+            padding: padding,
+          );
 
   /// Passed a config and (optional) style, should return a single button.
   ContextMenuButtonBuilder get buttonBuilder {
     return overlay.buttonBuilder ??
         (_, config, [style]) {
-          return ContextMenuButton(config, style: style ?? overlay.buttonStyle);
+          return ContextMenuButton(
+            config,
+            style: style ?? overlay.buttonStyle,
+          );
         };
   }
 
   /// Builds divider to separate sections in the menu
-  Widget buildDivider() => overlay.dividerBuilder?.call(context) ?? ContextMenuDivider();
+  Widget buildDivider() {
+    return overlay.dividerBuilder?.call(context) ?? ContextMenuDivider();
+  }
 }

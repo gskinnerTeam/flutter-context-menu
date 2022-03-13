@@ -32,19 +32,24 @@ class MyApp extends StatelessWidget {
 /// Presents the tests with default styling
 class DefaultMenuTests extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => ContextMenuOverlay(child: TestContent(title: "Default Menus"));
+  Widget build(BuildContext context) {
+    return ContextMenuOverlay(
+      child: TestContent(title: 'Default Menus'),
+    );
+  }
 }
 
 class StyledMenuTests extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ContextMenuOverlay(
-        buttonStyle: ContextMenuButtonStyle(
-          fgColor: Colors.green,
-          bgColor: Colors.red.shade100,
-          hoverBgColor: Colors.red.shade200,
-        ),
-        child: TestContent(title: "Styled Menus"));
+      buttonStyle: ContextMenuButtonStyle(
+        fgColor: Colors.green,
+        bgColor: Colors.red.shade100,
+        hoverBgColor: Colors.red.shade200,
+      ),
+      child: TestContent(title: 'Styled Menus'),
+    );
   }
 }
 
@@ -54,23 +59,39 @@ class CustomMenuTests extends StatelessWidget {
   Widget build(BuildContext context) {
     return ContextMenuOverlay(
       /// Make a custom background
-      cardBuilder: (_, children) => Container(color: Colors.purple.shade100, child: Column(children: children)),
+      cardBuilder:
+          (_, children, border, borderRadius, bgColor, shadows, padding) {
+        return Container(
+          color: Colors.purple.shade100,
+          child: Column(children: children),
+        );
+      },
 
       /// Make custom buttons
       buttonBuilder: (_, config, [__]) => TextButton(
         onPressed: config.onPressed,
-        child: Container(width: double.infinity, child: Text(config.label)),
+        child: Container(
+          width: double.infinity,
+          child: Text(config.label),
+        ),
       ),
-      child: Container(color: Colors.blue.shade200, child: TestContent(title: "Custom Menus")),
+      child: Container(
+        color: Colors.blue.shade200,
+        child: TestContent(title: 'Custom Menus'),
+      ),
     );
   }
 }
 
 class TestContent extends StatelessWidget {
-  const TestContent({Key? key, required this.title}) : super(key: key);
+  const TestContent({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
+
   final String title;
   final String _testImageUrl =
-      "https://images.unsplash.com/photo-1590005354167-6da97870c757?auto=format&fit=crop&w=100&q=80";
+      'https://images.unsplash.com/photo-1590005354167-6da97870c757?auto=format&fit=crop&w=100&q=80';
 
   @override
   Widget build(BuildContext context) {
@@ -81,13 +102,17 @@ class TestContent extends StatelessWidget {
           /// Example menu for non-selectable text
           ContextMenuRegion(
             contextMenu: TextContextMenu(data: title),
-            child: Text(title, style: TextStyle(fontSize: 32)),
+            child: Text(
+              title,
+              style: TextStyle(fontSize: 32),
+            ),
           ),
 
           /// Example hyperlink menu
           ContextMenuRegion(
             contextMenu: LinkContextMenu(url: 'http://flutter.dev'),
-            child: TextButton(onPressed: () {}, child: Text("http://flutter.dev")),
+            child:
+                TextButton(onPressed: () {}, child: Text("http://flutter.dev")),
           ),
 
           /// Custom Context Menu for an Image
@@ -95,12 +120,14 @@ class TestContent extends StatelessWidget {
             contextMenu: GenericContextMenu(
               buttonConfigs: [
                 ContextMenuButtonConfig(
-                  "View image in browser",
+                  'View image in browser',
                   onPressed: () => launch(_testImageUrl),
                 ),
                 ContextMenuButtonConfig(
-                  "Copy image path",
-                  onPressed: () => Clipboard.setData(ClipboardData(text: _testImageUrl)),
+                  'Copy image path',
+                  onPressed: () => Clipboard.setData(
+                    ClipboardData(text: _testImageUrl),
+                  ),
                 )
               ],
             ),

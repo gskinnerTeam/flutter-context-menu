@@ -11,22 +11,36 @@ class GenericContextMenu extends StatefulWidget {
     required this.buttonConfigs,
     this.injectDividers = false,
     this.autoClose = true,
+    this.border,
+    this.borderRadius,
+    this.bgColor,
+    this.shadows,
+    this.padding,
   }) : super(key: key);
+
+  final List<ContextMenuButtonConfig?> buttonConfigs;
   final bool injectDividers;
   final bool autoClose;
-  final List<ContextMenuButtonConfig?> buttonConfigs;
+  final Border? border;
+  final BorderRadius? borderRadius;
+  final Color? bgColor;
+  final List<BoxShadow>? shadows;
+  final EdgeInsets? padding;
+
   @override
   _GenericContextMenuState createState() => _GenericContextMenuState();
 }
 
-class _GenericContextMenuState extends State<GenericContextMenu> with ContextMenuStateMixin {
+class _GenericContextMenuState extends State<GenericContextMenu>
+    with ContextMenuStateMixin {
   @override
   Widget build(BuildContext context) {
     // Guard against an empty list
-    if ((widget.buttonConfigs.isEmpty)) {
+    if (widget.buttonConfigs.isEmpty) {
       // auto-close the menu since it's empty
       scheduleMicrotask(() => context.contextMenuOverlay.close());
-      return Container(); // Need to return something, but it will be thrown away next frame.
+      return const SizedBox
+          .shrink(); // Need to return something, but it will be thrown away next frame.
     }
     // Interleave dividers into the menu, use null as a marker to indicate a divider at some position.
     if (widget.injectDividers) {
@@ -49,16 +63,24 @@ class _GenericContextMenuState extends State<GenericContextMenu> with ContextMen
           }
           // Build btn
           return buttonBuilder.call(
-              context,
-              ContextMenuButtonConfig(
-                config.label,
-                icon: config.icon,
-                iconHover: config.iconHover,
-                shortcutLabel: config.shortcutLabel,
-                onPressed: action,
-              ));
+            context,
+            ContextMenuButtonConfig(
+              config.label,
+              icon: config.icon,
+              iconHover: config.iconHover,
+              shortcutLabel: config.shortcutLabel,
+              onPressed: action,
+              border: config.border,
+              borderRadius: config.borderRadius,
+            ),
+          );
         },
       ).toList(),
+      widget.border,
+      widget.borderRadius,
+      widget.bgColor,
+      widget.shadows,
+      widget.padding,
     );
   }
 }
