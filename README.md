@@ -6,7 +6,7 @@ A package to show context menus on right-click or long-press.
 ## 🔨 Installation
 ```yaml
 dependencies:
-  context_menus: ^1.0.1
+  context_menus: ^1.0.2
 ```
 
 ### ⚙ Import

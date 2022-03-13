@@ -7,23 +7,19 @@ void main() {
   runApp(MyApp());
 }
 
-// Default menus, with icons or not
-// GenericContextMenu
-// Custom styling
-// Custom Builders
-// CustomViews
-
 class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: Column(
-        children: [
-          Expanded(child: DefaultMenuTests()),
-          Expanded(child: StyledMenuTests()),
-          Expanded(child: CustomMenuTests()),
-        ],
+      home: Scaffold(
+        body: Column(
+          children: [
+            Expanded(child: DefaultMenuTests()),
+            Expanded(child: StyledMenuTests()),
+            Expanded(child: CustomMenuTests()),
+          ],
+        ),
       ),
     );
   }
@@ -38,13 +34,17 @@ class DefaultMenuTests extends StatelessWidget {
 class StyledMenuTests extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ContextMenuOverlay(
-        buttonStyle: ContextMenuButtonStyle(
-          fgColor: Colors.green,
-          bgColor: Colors.red.shade100,
-          hoverBgColor: Colors.red.shade200,
-        ),
-        child: TestContent(title: "Styled Menus"));
+    return Container(
+      color: Colors.green.shade200,
+      child: ContextMenuOverlay(
+          buttonStyle: ContextMenuButtonStyle(
+            fgColor: Colors.green,
+            bgColor: Colors.green.shade100,
+            hoverFgColor: Colors.green,
+            hoverBgColor: Colors.green.shade200,
+          ),
+          child: TestContent(title: "Styled Menus")),
+    );
   }
 }
 
@@ -76,6 +76,7 @@ class TestContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      color: Colors.transparent,
       child: Column(
         children: [
           /// Example menu for non-selectable text

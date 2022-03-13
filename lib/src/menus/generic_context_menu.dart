@@ -11,9 +11,11 @@ class GenericContextMenu extends StatefulWidget {
     required this.buttonConfigs,
     this.injectDividers = false,
     this.autoClose = true,
+    this.buttonStyle,
   }) : super(key: key);
   final bool injectDividers;
   final bool autoClose;
+  final ContextMenuButtonStyle? buttonStyle;
   final List<ContextMenuButtonConfig?> buttonConfigs;
   @override
   _GenericContextMenuState createState() => _GenericContextMenuState();
@@ -25,7 +27,7 @@ class _GenericContextMenuState extends State<GenericContextMenu> with ContextMen
     // Guard against an empty list
     if ((widget.buttonConfigs.isEmpty)) {
       // auto-close the menu since it's empty
-      scheduleMicrotask(() => context.contextMenuOverlay.close());
+      scheduleMicrotask(() => context.contextMenuOverlay.hide());
       return Container(); // Need to return something, but it will be thrown away next frame.
     }
     // Interleave dividers into the menu, use null as a marker to indicate a divider at some position.
@@ -56,7 +58,8 @@ class _GenericContextMenuState extends State<GenericContextMenu> with ContextMen
                 iconHover: config.iconHover,
                 shortcutLabel: config.shortcutLabel,
                 onPressed: action,
-              ));
+              ),
+              widget.buttonStyle);
         },
       ).toList(),
     );

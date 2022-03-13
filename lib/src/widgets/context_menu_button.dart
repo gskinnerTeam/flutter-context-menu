@@ -59,12 +59,13 @@ class _ContextMenuButtonState extends State<ContextMenuButton> {
                 /// Optional Icon
                 if (config.icon != null) ...[
                   SizedBox(
-                      width: 16, height: 16, child: (_isMouseOver) ? config.iconHover ?? config.icon! : config.icon!),
+                      width: 16, height: 16, child: (showMouseOver) ? config.iconHover ?? config.icon! : config.icon!),
                   SizedBox(width: 16)
                 ],
 
                 /// Main Label
-                Text(config.label, style: style.textStyle!.copyWith(color: style.fgColor)),
+                Text(config.label,
+                    style: style.textStyle!.copyWith(color: showMouseOver ? style.hoverFgColor : style.fgColor)),
                 Spacer(),
 
                 /// Shortcut Label
@@ -73,7 +74,8 @@ class _ContextMenuButtonState extends State<ContextMenuButton> {
                     opacity: showMouseOver ? 1 : .7,
                     child: Text(
                       config.shortcutLabel!,
-                      style: (style.shortcutTextStyle ?? style.textStyle!).copyWith(color: style.fgColor),
+                      style: (style.shortcutTextStyle ?? style.textStyle!)
+                          .copyWith(color: showMouseOver ? style.hoverFgColor : style.fgColor),
                     ),
                   )
                 ]
@@ -87,7 +89,7 @@ class _ContextMenuButtonState extends State<ContextMenuButton> {
 }
 
 class ContextMenuButtonStyle {
-  ContextMenuButtonStyle(
+  const ContextMenuButtonStyle(
       {this.fgColor,
       this.bgColor,
       this.hoverFgColor,
@@ -104,6 +106,26 @@ class ContextMenuButtonStyle {
   final TextStyle? textStyle;
   final TextStyle? shortcutTextStyle;
   final double disabledOpacity;
+
+  ContextMenuButtonStyle copyWith(
+      {Color? fgColor,
+      Color? bgColor,
+      Color? hoverFgColor,
+      Color? hoverBgColor,
+      EdgeInsets? padding,
+      TextStyle? textStyle,
+      TextStyle? shortcutTextStyle,
+      double disabledOpacity = .7}) {
+    return ContextMenuButtonStyle(
+      fgColor: fgColor ?? this.fgColor,
+      bgColor: bgColor ?? this.bgColor,
+      hoverFgColor: hoverFgColor ?? this.hoverFgColor,
+      hoverBgColor: hoverBgColor ?? this.hoverBgColor,
+      padding: padding ?? this.padding,
+      textStyle: textStyle ?? this.textStyle,
+      disabledOpacity: disabledOpacity,
+    );
+  }
 }
 
 class ContextMenuButtonConfig {

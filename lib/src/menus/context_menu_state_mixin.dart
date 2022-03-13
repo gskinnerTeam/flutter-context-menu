@@ -9,16 +9,18 @@ mixin ContextMenuStateMixin<T extends StatefulWidget> on State<T> {
   /// which you almost always want to do in a context menu.
   void handlePressed(BuildContext context, VoidCallback action) {
     action.call();
-    overlay.close();
+    overlay.hide();
   }
 
-  /// Shortcut call to `ContextMenuOverlay.of(context)`
+  /// Shortcut call to [ContextMenuOverlay].of(context)
   ContextMenuOverlayState get overlay => ContextMenuOverlay.of(context);
 
-  /// Receives a list of buttons, and should provide a background and layout for them.
+  /// Receives a list of buttons, and should wrap them with some container and layout widget (col/row).
+  /// Defaults to a [ContextMenuCard] which is just a column with a background.
   ContextMenuCardBuilder get cardBuilder => overlay.cardBuilder ?? (_, children) => ContextMenuCard(children: children);
 
   /// Passed a config and (optional) style, should return a single button.
+  /// Defaults to [ContextMenuButton]
   ContextMenuButtonBuilder get buttonBuilder {
     return overlay.buttonBuilder ??
         (_, config, [style]) {

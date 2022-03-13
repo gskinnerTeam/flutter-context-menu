@@ -1,7 +1,7 @@
 name: context_menus
 description: A package to show context menus on right-click or long-press.
-version: 1.0.1
-homepage: https://github.com/gskinnerTeam/flutter-context-menus
+version: 0.1.0+6
+homepage: https://github.com/gskinnerTeam/flutter-context-menu
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

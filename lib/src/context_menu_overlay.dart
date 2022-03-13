@@ -19,7 +19,7 @@ class ContextMenuOverlay extends StatefulWidget {
     this.cardBuilder,
     this.buttonBuilder,
     this.dividerBuilder,
-    this.buttonStyle,
+    this.buttonStyle = const ContextMenuButtonStyle(),
   }) : super(key: key);
   final Widget child;
 
@@ -27,7 +27,7 @@ class ContextMenuOverlay extends StatefulWidget {
   final ContextMenuCardBuilder? cardBuilder;
 
   /// Builds a button for the menu. It will be provided a [ContextMenuButtonConfig] and should return a button
-  final ContextMenuButtonBuilder? buttonBuilder;
+  late final ContextMenuButtonBuilder? buttonBuilder;
 
   /// Builds a vertical or horizontal divider
   final ContextMenuDividerBuilder? dividerBuilder;
@@ -40,10 +40,13 @@ class ContextMenuOverlay extends StatefulWidget {
   ContextMenuOverlayState createState() => ContextMenuOverlayState();
 
   static ContextMenuOverlayState of(BuildContext context) =>
-      (context.dependOnInheritedWidgetOfExactType<_InheritedContextMenu>() as _InheritedContextMenu).state;
+      (context.dependOnInheritedWidgetOfExactType<_InheritedContextMenuOverlay>() as _InheritedContextMenuOverlay)
+          .state;
 }
 
 class ContextMenuOverlayState extends State<ContextMenuOverlay> {
+  static ContextMenuButtonStyle defaultButtonStyle = ContextMenuButtonStyle();
+
   Widget? _currentMenu;
   Size? _prevSize;
   Size _menuSize = Size.zero;
@@ -52,63 +55,65 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
   ContextMenuButtonBuilder? get buttonBuilder => widget.buttonBuilder;
   ContextMenuDividerBuilder? get dividerBuilder => widget.dividerBuilder;
   ContextMenuCardBuilder? get cardBuilder => widget.cardBuilder;
-  ContextMenuButtonStyle? get buttonStyle => widget.buttonStyle;
+  ContextMenuButtonStyle get buttonStyle => widget.buttonStyle ?? defaultButtonStyle;
 
   @override
   Widget build(BuildContext context) {
-    return Listener(
-      onPointerDown: (e) => _mousePos = e.localPosition,
-      child: LayoutBuilder(
-        builder: (_, constraints) {
-          // Remove any open menus when we resize (common behavior, and avoids edge cases / complexity)
-          _nullMenuIfOverlayWasResized(constraints);
-          // Offset the menu depending on which quadrant of the app we're in, this will make sure it always stays in bounds.
-          double dx = 0, dy = 0;
-          if (_mousePos.dx > (_prevSize?.width ?? 0) / 2) dx = -_menuSize.width;
-          if (_mousePos.dy > (_prevSize?.height ?? 0) / 2) dy = -_menuSize.height;
-          // The final menuPos, is mousePos + quadrant offset
-          Offset _menuPos = _mousePos + Offset(dx, dy);
-          Widget? menuToShow = _currentMenu;
-          return _InheritedContextMenu(
+    return LayoutBuilder(
+      builder: (_, constraints) {
+        // Remove any open menus when we resize (common behavior, and avoids edge cases / complexity)
+        _nullMenuIfOverlayWasResized(constraints);
+        // Offset the menu depending on which quadrant of the app we're in, this will make sure it always stays in bounds.
+        double dx = 0, dy = 0;
+        if (_mousePos.dx > (_prevSize?.width ?? 0) / 2) dx = -_menuSize.width;
+        if (_mousePos.dy > (_prevSize?.height ?? 0) / 2) dy = -_menuSize.height;
+        // The final menuPos, is mousePos + quadrant offset
+        Offset _menuPos = _mousePos + Offset(dx, dy);
+        Widget? menuToShow = _currentMenu;
+
+        return _InheritedContextMenuOverlay(
             state: this,
             child: Scaffold(
-              body: Stack(
-                children: [
-                  // Child is the contents of the overlay, usually the entire app.
-                  widget.child,
-                  // Show the menu?
-                  if (menuToShow != null) ...[
-                    Positioned.fill(child: Container(color: Colors.transparent)),
+              backgroundColor: Colors.transparent,
+              body: Listener(
+                onPointerDown: (e) => _mousePos = e.localPosition,
+                // Listen for Notifications coming up from the app
+                child: Stack(
+                  children: [
+                    // Child is the contents of the overlay, usually the entire app.
+                    widget.child,
+                    // Show the menu?
+                    if (menuToShow != null) ...[
+                      Positioned.fill(child: Container(color: Colors.transparent)),
 
-                    /// Underlay, blocks all taps to the main content.
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onPanStart: (_) => close(),
-                      onTap: () => close(),
-                      onSecondaryTapDown: (_) => close(),
-                      child: Container(),
-                    ),
+                      /// Underlay, blocks all taps to the main content.
+                      GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onPanStart: (_) => hide(),
+                        onTap: () => hide(),
+                        onSecondaryTapDown: (_) => hide(),
+                        child: Container(),
+                      ),
 
-                    /// Position the menu contents
-                    Transform.translate(
-                      offset: _menuPos,
-                      child: Opacity(
-                        opacity: _menuSize != Size.zero ? 1 : 0,
-                        // Use a measure size widget so we can offset the child properly
-                        child: MeasuredSizeWidget(
-                          key: ObjectKey(menuToShow),
-                          onChange: _handleMenuSizeChanged,
-                          child: IntrinsicWidth(child: IntrinsicHeight(child: menuToShow)),
+                      /// Position the menu contents
+                      Transform.translate(
+                        offset: _menuPos,
+                        child: Opacity(
+                          opacity: _menuSize != Size.zero ? 1 : 0,
+                          // Use a measure size widget so we can offset the child properly
+                          child: MeasuredSizeWidget(
+                            key: ObjectKey(menuToShow),
+                            onChange: _handleMenuSizeChanged,
+                            child: IntrinsicWidth(child: IntrinsicHeight(child: menuToShow)),
+                          ),
                         ),
                       ),
-                    ),
-                  ]
-                ],
+                    ]
+                  ],
+                ),
               ),
-            ),
-          );
-        },
-      ),
+            ));
+      },
     );
   }
 
@@ -122,8 +127,8 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
     });
   }
 
-  /// Closes the current popup if there is one. Fails silently if not.
-  void close() => setState(() => _currentMenu = null);
+  /// Hides the current popup if there is one. Fails silently if not.
+  void hide() => setState(() => _currentMenu = null);
 
   /// re-position and rebuild whenever menu size changes
   void _handleMenuSizeChanged(Size value) => setState(() => _menuSize = value);
@@ -139,8 +144,8 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
 }
 
 /// InheritedWidget boilerplate
-class _InheritedContextMenu extends InheritedWidget {
-  _InheritedContextMenu({Key? key, required Widget child, required this.state}) : super(key: key, child: child);
+class _InheritedContextMenuOverlay extends InheritedWidget {
+  _InheritedContextMenuOverlay({Key? key, required Widget child, required this.state}) : super(key: key, child: child);
 
   final ContextMenuOverlayState state;
 
