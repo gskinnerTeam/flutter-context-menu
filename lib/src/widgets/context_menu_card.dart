@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 /// Background for each ContextMenu
 typedef Widget ContextMenuCardBuilder(BuildContext context, List<Widget> children);

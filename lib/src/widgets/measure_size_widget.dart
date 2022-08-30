@@ -19,6 +19,6 @@ class _MeasureSizeRenderObject extends RenderProxyBox {
     Size newSize = child?.size ?? Size.zero;
     if (_prevSize == newSize) return;
     _prevSize = newSize;
-    WidgetsBinding.instance?.addPostFrameCallback((_) => onChange(newSize));
+    WidgetsBinding.instance.addPostFrameCallback((_) => onChange(newSize));
   }
 }

@@ -4,17 +4,20 @@ import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: Scaffold(
         body: Column(
-          children: [
+          children: const [
             Expanded(child: DefaultMenuTests()),
             Expanded(child: StyledMenuTests()),
             Expanded(child: CustomMenuTests()),
@@ -27,11 +30,15 @@ class MyApp extends StatelessWidget {
 
 /// Presents the tests with default styling
 class DefaultMenuTests extends StatelessWidget {
+  const DefaultMenuTests({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) => ContextMenuOverlay(child: TestContent(title: "Default Menus"));
+  Widget build(BuildContext context) => ContextMenuOverlay(child: const TestContent(title: "Default Menus"));
 }
 
 class StyledMenuTests extends StatelessWidget {
+  const StyledMenuTests({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,13 +50,15 @@ class StyledMenuTests extends StatelessWidget {
             hoverFgColor: Colors.green,
             hoverBgColor: Colors.green.shade200,
           ),
-          child: TestContent(title: "Styled Menus")),
+          child: const TestContent(title: "Styled Menus")),
     );
   }
 }
 
 /// Presents the tests with custom styling
 class CustomMenuTests extends StatelessWidget {
+  const CustomMenuTests({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ContextMenuOverlay(
@@ -59,9 +68,9 @@ class CustomMenuTests extends StatelessWidget {
       /// Make custom buttons
       buttonBuilder: (_, config, [__]) => TextButton(
         onPressed: config.onPressed,
-        child: Container(width: double.infinity, child: Text(config.label)),
+        child: SizedBox(width: double.infinity, child: Text(config.label)),
       ),
-      child: Container(color: Colors.blue.shade200, child: TestContent(title: "Custom Menus")),
+      child: Container(color: Colors.blue.shade200, child: const TestContent(title: "Custom Menus")),
     );
   }
 }
@@ -82,13 +91,13 @@ class TestContent extends StatelessWidget {
           /// Example menu for non-selectable text
           ContextMenuRegion(
             contextMenu: TextContextMenu(data: title),
-            child: Text(title, style: TextStyle(fontSize: 32)),
+            child: Text(title, style: const TextStyle(fontSize: 32)),
           ),
 
           /// Example hyperlink menu
           ContextMenuRegion(
-            contextMenu: LinkContextMenu(url: 'http://flutter.dev'),
-            child: TextButton(onPressed: () {}, child: Text("http://flutter.dev")),
+            contextMenu: const LinkContextMenu(url: 'http://flutter.dev'),
+            child: TextButton(onPressed: () {}, child: const Text("http://flutter.dev")),
           ),
 
           /// Custom Context Menu for an Image

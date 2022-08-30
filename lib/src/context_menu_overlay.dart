@@ -1,7 +1,6 @@
 library context_menus;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import 'widgets/context_menu_button.dart';
 import 'widgets/context_menu_card.dart';

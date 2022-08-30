@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 
 typedef Widget ContextMenuButtonBuilder(BuildContext context, ContextMenuButtonConfig config,
     [ContextMenuButtonStyle? style]);
@@ -26,13 +24,16 @@ class _ContextMenuButtonState extends State<ContextMenuButton> {
     bool isDisabled = widget.config.onPressed == null;
     bool showMouseOver = _isMouseOver && !isDisabled;
     Color defaultTextColor = Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black;
+    final ThemeData theme = Theme.of(context);
+    TextStyle? defaultTextStyle = theme.textTheme.bodyText1?.copyWith(color: theme.colorScheme.onSecondary);
+    TextStyle? shortcutTextStyle = theme.textTheme.bodyText2?.copyWith(color: theme.colorScheme.onSecondary);
     ContextMenuButtonStyle style = ContextMenuButtonStyle(
-      textStyle: widget.style?.textStyle ?? Theme.of(context).accentTextTheme.bodyText1,
-      shortcutTextStyle: widget.style?.shortcutTextStyle ?? Theme.of(context).accentTextTheme.bodyText2,
+      textStyle: widget.style?.textStyle ?? defaultTextStyle,
+      shortcutTextStyle: widget.style?.shortcutTextStyle ?? shortcutTextStyle,
       fgColor: widget.style?.fgColor ?? defaultTextColor,
       bgColor: widget.style?.bgColor ?? Colors.transparent,
       hoverBgColor: widget.style?.hoverBgColor ?? Theme.of(context).backgroundColor.withOpacity(.2),
-      hoverFgColor: widget.style?.hoverFgColor ?? Theme.of(context).accentColor,
+      hoverFgColor: widget.style?.hoverFgColor ?? Theme.of(context).colorScheme.secondary,
       padding: widget.style?.padding ?? EdgeInsets.all(6),
     );
 

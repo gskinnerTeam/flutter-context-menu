@@ -10,17 +10,20 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  flutter_lints: ^2.0.1
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+
+  url_launcher: ^6.0.3
+
+  context_menus:
+    path: ../
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  url_launcher: ^6.0.3
-  context_menus:
-    path: ../
 
 # The following section is specific to Flutter.
 flutter:
