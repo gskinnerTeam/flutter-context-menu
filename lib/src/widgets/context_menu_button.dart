@@ -6,8 +6,8 @@ typedef Widget ContextMenuButtonBuilder(
   ContextMenuButtonStyle? style,
 ]);
 
-/// The default ContextMenu button. To provide your own, override
-/// [ContextMenuOverlay] buttonBuilder.
+/// The default ContextMenu button. To provide your own, override [ContextMenuOverlay] buttonBuilder.
+/// TODO: This should use FocusableControlBuilder?
 class ContextMenuButton extends StatefulWidget {
   const ContextMenuButton(
     this.config, {
@@ -38,21 +38,17 @@ class _ContextMenuButtonState extends State<ContextMenuButton> {
 
     final ThemeData theme = Theme.of(context);
 
-    Color defaultTextColor =
-        theme.brightness == Brightness.dark ? Colors.white : Colors.black;
+    Color defaultTextColor = theme.brightness == Brightness.dark ? Colors.white : Colors.black;
 
-    TextStyle? defaultTextStyle = theme.textTheme.bodyLarge
-        ?.copyWith(color: theme.colorScheme.onSecondary);
-    TextStyle? shortcutTextStyle = theme.textTheme.bodyMedium
-        ?.copyWith(color: theme.colorScheme.onSecondary);
+    TextStyle? defaultTextStyle = theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSecondary);
+    TextStyle? shortcutTextStyle = theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSecondary);
 
     ContextMenuButtonStyle style = ContextMenuButtonStyle(
       textStyle: widget.style?.textStyle ?? defaultTextStyle,
       shortcutTextStyle: widget.style?.shortcutTextStyle ?? shortcutTextStyle,
       fgColor: widget.style?.fgColor ?? defaultTextColor,
       bgColor: widget.style?.bgColor ?? Colors.transparent,
-      hoverBgColor: widget.style?.hoverBgColor ??
-          theme.scaffoldBackgroundColor.withOpacity(0.2),
+      hoverBgColor: widget.style?.hoverBgColor ?? theme.scaffoldBackgroundColor.withOpacity(0.2),
       hoverFgColor: widget.style?.hoverFgColor ?? theme.colorScheme.secondary,
       padding: widget.style?.padding ?? EdgeInsets.all(6.0),
     );
@@ -82,9 +78,7 @@ class _ContextMenuButtonState extends State<ContextMenuButton> {
                   SizedBox(
                     width: 16,
                     height: 16,
-                    child: (showMouseOver)
-                        ? config.iconHover ?? config.icon!
-                        : config.icon!,
+                    child: (showMouseOver) ? config.iconHover ?? config.icon! : config.icon!,
                   ),
                   SizedBox(width: 16)
                 ],
@@ -105,10 +99,7 @@ class _ContextMenuButtonState extends State<ContextMenuButton> {
                     child: Text(
                       config.shortcutLabel!,
                       style: (style.shortcutTextStyle ?? style.textStyle!)
-                          .copyWith(
-                              color: showMouseOver
-                                  ? style.hoverFgColor
-                                  : style.fgColor),
+                          .copyWith(color: showMouseOver ? style.hoverFgColor : style.fgColor),
                     ),
                   )
                 ]

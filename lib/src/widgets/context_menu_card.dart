@@ -7,16 +7,10 @@ typedef Widget ContextMenuCardBuilder(
 );
 
 class ContextMenuCard extends StatelessWidget {
-  const ContextMenuCard({
-    required this.children,
-    this.borderRadius,
-    this.bgColor,
-    this.border,
-    this.shadows,
-    this.padding,
-    super.key,
-  });
-
+  const ContextMenuCard(
+      {Key? key, required this.children, this.borderRadius, this.bgColor, this.border, this.shadows, this.padding})
+      : super(key: key);
+  static double minWidth = 150;
   final List<Widget> children;
   final Border? border;
   final BorderRadius? borderRadius;
@@ -26,11 +20,10 @@ class ContextMenuCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color shadowColor =
-        Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black;
+    Color shadowColor = Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black;
     BorderRadius radius = borderRadius ?? BorderRadius.circular(4);
     return ConstrainedBox(
-      constraints: BoxConstraints(minWidth: 250),
+      constraints: BoxConstraints(minWidth: minWidth),
       child: ClipRRect(
         borderRadius: radius,
         child: Container(
