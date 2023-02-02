@@ -3,15 +3,22 @@ import 'package:flutter/widgets.dart';
 
 import '../context_menus.dart';
 
+enum ContextMenuShowBehavior { tap, secondaryTap, longPress }
+
 /// Wraps any widget in a GestureDetector and calls [ContextMenuOverlay].show
 class ContextMenuRegion extends StatelessWidget {
   const ContextMenuRegion(
-      {Key? key, required this.child, required this.contextMenu, this.isEnabled = true, this.enableLongPress = true})
+      {Key? key,
+      required this.child,
+      required this.contextMenu,
+      this.isEnabled = true,
+      this.behavior = const [ContextMenuShowBehavior.secondaryTap]})
       : super(key: key);
   final Widget child;
   final Widget contextMenu;
   final bool isEnabled;
-  final bool enableLongPress;
+  final List<ContextMenuShowBehavior> behavior;
+
   @override
   Widget build(BuildContext context) {
     void showMenu() {
@@ -22,8 +29,13 @@ class ContextMenuRegion extends StatelessWidget {
     if (isEnabled == false) return child;
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onSecondaryTap: showMenu,
-      onLongPress: enableLongPress ? showMenu : null,
+      onTap: behavior.contains(ContextMenuShowBehavior.tap) ? showMenu : null,
+      onSecondaryTap: behavior.contains(ContextMenuShowBehavior.secondaryTap)
+          ? showMenu
+          : null,
+      onLongPress: behavior.contains(ContextMenuShowBehavior.longPress)
+          ? showMenu
+          : null,
       child: child,
     );
   }
