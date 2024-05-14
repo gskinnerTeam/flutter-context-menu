@@ -5,13 +5,19 @@ import '../context_menus.dart';
 
 /// Wraps any widget in a GestureDetector and calls [ContextMenuOverlay].show
 class ContextMenuRegion extends StatelessWidget {
-  const ContextMenuRegion(
-      {Key? key, required this.child, required this.contextMenu, this.isEnabled = true, this.enableLongPress = true})
-      : super(key: key);
+  const ContextMenuRegion({
+    required this.child,
+    required this.contextMenu,
+    this.isEnabled = true,
+    this.enableLongPress = true,
+    super.key,
+  });
+
   final Widget child;
   final Widget contextMenu;
   final bool isEnabled;
   final bool enableLongPress;
+
   @override
   Widget build(BuildContext context) {
     void showMenu() {

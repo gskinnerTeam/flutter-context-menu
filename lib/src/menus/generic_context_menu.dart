@@ -7,16 +7,18 @@ import '../../context_menus.dart';
 /// Pass a list of ButtonConfigs, and this will create a basic context menu dynamically.
 class GenericContextMenu extends StatefulWidget {
   const GenericContextMenu({
-    Key? key,
     required this.buttonConfigs,
     this.injectDividers = false,
     this.autoClose = true,
     this.buttonStyle,
-  }) : super(key: key);
+    super.key,
+  });
+
   final bool injectDividers;
   final bool autoClose;
   final ContextMenuButtonStyle? buttonStyle;
   final List<ContextMenuButtonConfig?> buttonConfigs;
+
   @override
   _GenericContextMenuState createState() => _GenericContextMenuState();
 }
