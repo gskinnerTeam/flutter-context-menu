@@ -82,7 +82,7 @@ ContextMenuRegion(
 ),
 ```
 In this case, you are responsible for closing the menu when your buttons are triggered, which you can do using an extension on BuildContext:
-```
+```dart
 context.contextMenuOverlay.hide();
 ```
 

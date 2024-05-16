@@ -4,7 +4,13 @@ import 'package:flutter/services.dart';
 import '../../context_menus.dart';
 
 class TextContextMenu extends StatefulWidget {
-  const TextContextMenu({Key? key, required this.data, this.controller, this.obscuredText = false}) : super(key: key);
+  const TextContextMenu({
+    required this.data,
+    this.controller,
+    this.obscuredText = false,
+    super.key,
+  });
+
   final String data;
   final TextEditingController? controller;
   final bool obscuredText;
@@ -13,20 +19,27 @@ class TextContextMenu extends StatefulWidget {
   _TextContextMenuState createState() => _TextContextMenuState();
 }
 
-class _TextContextMenuState extends State<TextContextMenu> with ContextMenuStateMixin {
+class _TextContextMenuState extends State<TextContextMenu>
+    with ContextMenuStateMixin {
   @override
   Widget build(BuildContext context) {
-    bool allSelected = false, noneSelected = true;
+    bool allSelected = false;
+    bool noneSelected = true;
+
     final tc = widget.controller;
     if (tc != null) {
-      tc.value = tc.value.copyWith(selection: TextSelection(baseOffset: 0, extentOffset: tc.text.length));
+      tc.value = tc.value.copyWith(
+        selection: TextSelection(baseOffset: 0, extentOffset: tc.text.length),
+      );
       noneSelected = tc.value.selection.isCollapsed;
     }
+
     bool disableCopy = widget.obscuredText;
     bool disableCut = noneSelected || widget.obscuredText;
     bool disablePaste = widget.obscuredText;
     bool disableDelete = noneSelected;
     bool disableSelectAll = allSelected || widget.data.isEmpty;
+
     return cardBuilder.call(
       context,
       [
@@ -34,7 +47,9 @@ class _TextContextMenuState extends State<TextContextMenu> with ContextMenuState
           context,
           ContextMenuButtonConfig(
             "Copy",
-            onPressed: disableCopy ? null : () => handlePressed(context, _handleCopyPressed),
+            onPressed: disableCopy
+                ? null
+                : () => handlePressed(context, _handleCopyPressed),
           ),
         ),
         if (widget.controller != null) ...[
@@ -44,14 +59,18 @@ class _TextContextMenuState extends State<TextContextMenu> with ContextMenuState
               context,
               ContextMenuButtonConfig(
                 "Cut",
-                onPressed: disableCut ? null : () => handlePressed(context, _handleCutPressed),
+                onPressed: disableCut
+                    ? null
+                    : () => handlePressed(context, _handleCutPressed),
               ),
             ),
             buttonBuilder.call(
               context,
               ContextMenuButtonConfig(
                 "Paste",
-                onPressed: disablePaste ? null : () => handlePressed(context, _handlePastePressed),
+                onPressed: disablePaste
+                    ? null
+                    : () => handlePressed(context, _handlePastePressed),
               ),
             ),
           ],
@@ -59,7 +78,9 @@ class _TextContextMenuState extends State<TextContextMenu> with ContextMenuState
             context,
             ContextMenuButtonConfig(
               "Delete",
-              onPressed: disableDelete ? null : () => handlePressed(context, _handleDeletePressed),
+              onPressed: disableDelete
+                  ? null
+                  : () => handlePressed(context, _handleDeletePressed),
             ),
           ),
           buildDivider(),
@@ -67,7 +88,9 @@ class _TextContextMenuState extends State<TextContextMenu> with ContextMenuState
             context,
             ContextMenuButtonConfig(
               "Select All",
-              onPressed: disableSelectAll ? null : () => handlePressed(context, _handleSelectAllPressed),
+              onPressed: disableSelectAll
+                  ? null
+                  : () => handlePressed(context, _handleSelectAllPressed),
             ),
           ),
         ]
@@ -76,14 +99,16 @@ class _TextContextMenuState extends State<TextContextMenu> with ContextMenuState
   }
 
   void _handleCopyPressed() async {
-    String value = widget.controller?.selection.textInside(widget.data) ?? widget.data;
+    String value =
+        widget.controller?.selection.textInside(widget.data) ?? widget.data;
     Clipboard.setData(ClipboardData(text: value));
   }
 
   void _handleDeletePressed() async => widget.controller?.clear();
 
   void _handleSelectAllPressed() async {
-    widget.controller?.selection = TextSelection(baseOffset: 0, extentOffset: widget.controller?.text.length ?? 0);
+    widget.controller?.selection = TextSelection(
+        baseOffset: 0, extentOffset: widget.controller?.text.length ?? 0);
   }
 
   void _handlePastePressed() async {
@@ -95,7 +120,8 @@ class _TextContextMenuState extends State<TextContextMenu> with ContextMenuState
     if (value != null) {
       _addTextAtOffset(c.selection.start, value);
       // Move cursor to end on paste, as one does on desktop :)
-      c.selection = TextSelection.fromPosition(TextPosition(offset: start + value.length));
+      c.selection = TextSelection.fromPosition(
+          TextPosition(offset: start + value.length));
     }
   }
 
@@ -118,7 +144,8 @@ class _TextContextMenuState extends State<TextContextMenu> with ContextMenuState
     String p1 = c.text.substring(0, start);
     String p2 = c.text.substring(start);
     c.text = p1 + value + p2;
-    c.selection = TextSelection.fromPosition(TextPosition(offset: start + value.length));
+    c.selection =
+        TextSelection.fromPosition(TextPosition(offset: start + value.length));
   }
 
   void _removeTextRange(int start, int end) {
@@ -126,6 +153,8 @@ class _TextContextMenuState extends State<TextContextMenu> with ContextMenuState
     String p1 = widget.controller!.text.substring(0, start);
     String p2 = widget.controller!.text.substring(end);
     widget.controller!.text = p1 + p2;
-    widget.controller!.selection = TextSelection.fromPosition(TextPosition(offset: start));
+    widget.controller!.selection = TextSelection.fromPosition(
+      TextPosition(offset: start),
+    );
   }
 }
