@@ -1,3 +1,7 @@
+## 2.0.0
+* Add support for Tap behaviours
+* Remove longPress
+
 ## 1.2.0
 * Revert `tap behaviors` PR as it was a breaking change
 
