@@ -5,7 +5,12 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../context_menus.dart';
 
 class LinkContextMenu extends StatefulWidget {
-  const LinkContextMenu({Key? key, required this.url, this.useIcons = true}) : super(key: key);
+  const LinkContextMenu({
+    required this.url,
+    this.useIcons = true,
+    super.key,
+  });
+
   final String url;
   final bool useIcons;
 
@@ -13,7 +18,8 @@ class LinkContextMenu extends StatefulWidget {
   _LinkContextMenuState createState() => _LinkContextMenuState();
 }
 
-class _LinkContextMenuState extends State<LinkContextMenu> with ContextMenuStateMixin {
+class _LinkContextMenuState extends State<LinkContextMenu>
+    with ContextMenuStateMixin {
   @override
   Widget build(BuildContext context) {
     return cardBuilder.call(
@@ -47,11 +53,12 @@ class _LinkContextMenuState extends State<LinkContextMenu> with ContextMenuState
 
   void _handleNewWindowPressed() async {
     try {
-      launch(_getUrl());
+      launchUrl(Uri.parse(_getUrl()));
     } catch (e) {
       print("$e");
     }
   }
 
-  void _handleClipboardPressed() async => Clipboard.setData(ClipboardData(text: _getUrl()));
+  void _handleClipboardPressed() async =>
+      Clipboard.setData(ClipboardData(text: _getUrl()));
 }

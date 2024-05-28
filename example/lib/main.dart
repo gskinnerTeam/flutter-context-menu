@@ -12,16 +12,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: Scaffold(
-        body: Column(
-          children: const [
-            Expanded(child: DefaultMenuTests()),
-            Expanded(child: StyledMenuTests()),
-            Expanded(child: CustomMenuTests()),
-          ],
+    return ContextMenuOverlay(
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(primarySwatch: Colors.blue),
+        home: const Scaffold(
+          body: SafeArea(
+            child: Column(
+              children: [
+                Expanded(child: DefaultMenuTests()),
+                Expanded(child: StyledMenuTests()),
+                Expanded(child: CustomMenuTests()),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -30,7 +34,7 @@ class MyApp extends StatelessWidget {
 
 /// Presents the tests with default styling
 class DefaultMenuTests extends StatelessWidget {
-  const DefaultMenuTests({Key? key}) : super(key: key);
+  const DefaultMenuTests({super.key});
 
   @override
   Widget build(BuildContext context) => ContextMenuOverlay(child: const TestContent(title: "Default Menus"));
@@ -44,42 +48,53 @@ class StyledMenuTests extends StatelessWidget {
     return Container(
       color: Colors.green.shade200,
       child: ContextMenuOverlay(
-          buttonStyle: ContextMenuButtonStyle(
-            fgColor: Colors.green,
-            bgColor: Colors.green.shade100,
-            hoverFgColor: Colors.green,
-            hoverBgColor: Colors.green.shade200,
-          ),
-          child: const TestContent(title: "Styled Menus")),
+        buttonStyle: ContextMenuButtonStyle(
+          fgColor: Colors.green,
+          bgColor: Colors.green.shade100,
+          hoverFgColor: Colors.green,
+          hoverBgColor: Colors.green.shade200,
+        ),
+        child: const TestContent(title: "Styled Menus"),
+      ),
     );
   }
 }
 
 /// Presents the tests with custom styling
 class CustomMenuTests extends StatelessWidget {
-  const CustomMenuTests({Key? key}) : super(key: key);
+  const CustomMenuTests({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ContextMenuOverlay(
       /// Make a custom background
-      cardBuilder: (_, children) => Container(color: Colors.purple.shade100, child: Column(children: children)),
+      cardBuilder: (_, children) => Container(
+        color: Colors.purple.shade100,
+        child: Column(children: children),
+      ),
 
       /// Make custom buttons
       buttonBuilder: (_, config, [__]) => TextButton(
         onPressed: config.onPressed,
         child: SizedBox(width: double.infinity, child: Text(config.label)),
       ),
-      child: Container(color: Colors.blue.shade200, child: const TestContent(title: "Custom Menus")),
+      child: Container(
+        color: Colors.blue.shade200,
+        child: const TestContent(title: "Custom Menus"),
+      ),
     );
   }
 }
 
 class TestContent extends StatelessWidget {
-  const TestContent({Key? key, required this.title}) : super(key: key);
+  const TestContent({
+    required this.title,
+    super.key,
+  });
+
   final String title;
   final String _testImageUrl =
-      "https://images.unsplash.com/photo-1590005354167-6da97870c757?auto=format&fit=crop&w=100&q=80";
+      'https://images.unsplash.com/photo-1590005354167-6da97870c757?auto=format&fit=crop&w=100&q=80';
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +112,10 @@ class TestContent extends StatelessWidget {
           /// Example hyperlink menu
           ContextMenuRegion(
             contextMenu: const LinkContextMenu(url: 'http://flutter.dev'),
-            child: TextButton(onPressed: () {}, child: const Text("http://flutter.dev")),
+            child: TextButton(
+              onPressed: () {},
+              child: const Text("http://flutter.dev"),
+            ),
           ),
 
           /// Custom Context Menu for an Image
@@ -110,11 +128,13 @@ class TestContent extends StatelessWidget {
               buttonConfigs: [
                 ContextMenuButtonConfig(
                   "View image in browser",
-                  onPressed: () => launch(_testImageUrl),
+                  onPressed: () => launchUrl(Uri.parse(_testImageUrl)),
                 ),
                 ContextMenuButtonConfig(
                   "Copy image path",
-                  onPressed: () => Clipboard.setData(ClipboardData(text: _testImageUrl)),
+                  onPressed: () {
+                    Clipboard.setData(ClipboardData(text: _testImageUrl));
+                  },
                 )
               ],
             ),
