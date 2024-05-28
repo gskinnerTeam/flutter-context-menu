@@ -46,6 +46,14 @@ class StyledMenuTests extends StatelessWidget {
     return Container(
       color: Colors.green.shade200,
       child: ContextMenuOverlay(
+        /// Test cardBuilder by adding in a red margin
+        cardBuilder: (context, children) {
+          return Container(
+            color: Colors.red,
+            padding: const EdgeInsets.all(30),
+            child: Column(children: children),
+          );
+        },
         buttonStyle: ContextMenuButtonStyle(
           fgColor: Colors.green,
           bgColor: Colors.green.shade100,
