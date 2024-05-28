@@ -118,7 +118,6 @@ class TestContent extends StatelessWidget {
 
           /// Custom Context Menu for an Image
           ContextMenuRegion(
-            behavior: const [ContextMenuShowBehavior.secondaryTap, ContextMenuShowBehavior.longPress],
             contextMenu: GenericContextMenu(
               buttonConfigs: [
                 ContextMenuButtonConfig(

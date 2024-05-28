@@ -1,3 +1,6 @@
+## 1.2.0
+* Revert `tap behaviors` PR as it was a breaking change
+
 ## 1.1.1
 * Upgrade to flutter v3.22.0
 * Remove requirement for MaterialApp to wrap the overlay
