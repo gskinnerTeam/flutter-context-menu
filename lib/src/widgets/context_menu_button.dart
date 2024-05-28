@@ -37,20 +37,18 @@ class _ContextMenuButtonState extends State<ContextMenuButton> {
     bool showMouseOver = _isMouseOver && !isDisabled;
 
     final ThemeData theme = Theme.of(context);
-
     Color defaultTextColor = theme.brightness == Brightness.dark ? Colors.white : Colors.black;
-
-    TextStyle? defaultTextStyle = theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSecondary);
-    TextStyle? shortcutTextStyle = theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSecondary);
+    TextStyle? defaultTextStyle = theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSecondary);
+    TextStyle? shortcutTextStyle = theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSecondary);
 
     ContextMenuButtonStyle style = ContextMenuButtonStyle(
       textStyle: widget.style?.textStyle ?? defaultTextStyle,
       shortcutTextStyle: widget.style?.shortcutTextStyle ?? shortcutTextStyle,
       fgColor: widget.style?.fgColor ?? defaultTextColor,
       bgColor: widget.style?.bgColor ?? Colors.transparent,
-      hoverBgColor: widget.style?.hoverBgColor ?? theme.scaffoldBackgroundColor.withOpacity(0.2),
+      hoverBgColor: widget.style?.hoverBgColor ?? theme.colorScheme.primaryContainer,
       hoverFgColor: widget.style?.hoverFgColor ?? theme.colorScheme.secondary,
-      padding: widget.style?.padding ?? EdgeInsets.all(6.0),
+      padding: widget.style?.padding ?? EdgeInsets.all(6),
     );
 
     /// Handling our own clicks

@@ -7,10 +7,9 @@ import 'widgets/context_menu_card.dart';
 import 'widgets/context_menu_divider.dart';
 import 'widgets/measure_size_widget.dart';
 
-// The main overlay class, which should be nested between your top-most view and the MaterialApp.
-// Wraps the main app view and shows a contextMenu and contextModal on top.
-// This does not rely on Navigator.overlay, so you can place it around your Navigator,
-// supporting context menus within persistent portions of your scaffold.
+// The main overlay class which displays the menus and dismisses them when empty space is pressed.
+// Can wrap your MaterialApp or be nested at any level of your widget tree.
+// Shows a contextMenu and contextModal on top. Does not rely on Navigator.overlay, so you can place it around your Navigator,
 class ContextMenuOverlay extends StatefulWidget {
   ContextMenuOverlay({
     required this.child,
@@ -76,6 +75,7 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
         if (_mousePos.dy > (_prevSize?.height ?? 0) / 2) dy = -_menuSize.height;
         // The final menuPos, is mousePos + quadrant offset
         Offset _menuPos = _mousePos + Offset(dx, dy);
+        // TODO: Add compensation for edge of screen: if we are offscreen, get us back in bounds.
         Widget? menuToShow = _currentMenu;
         TextDirection? dir = Directionality.maybeOf(context);
         return Directionality(

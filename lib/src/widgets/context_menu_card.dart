@@ -20,7 +20,7 @@ class ContextMenuCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color shadowColor = Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black;
+    Color shadowColor = Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black;
     BorderRadius radius = borderRadius ?? BorderRadius.circular(4);
     return ConstrainedBox(
       constraints: BoxConstraints(minWidth: minWidth),

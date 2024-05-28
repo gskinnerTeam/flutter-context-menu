@@ -12,16 +12,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const Scaffold(
-        body: Column(
-          children: [
-            Expanded(child: DefaultMenuTests()),
-            Expanded(child: StyledMenuTests()),
-            Expanded(child: CustomMenuTests()),
-          ],
+    return ContextMenuOverlay(
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(primarySwatch: Colors.blue),
+        home: const Scaffold(
+          body: SafeArea(
+            child: Column(
+              children: [
+                Expanded(child: DefaultMenuTests()),
+                Expanded(child: StyledMenuTests()),
+                Expanded(child: CustomMenuTests()),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -33,8 +37,7 @@ class DefaultMenuTests extends StatelessWidget {
   const DefaultMenuTests({super.key});
 
   @override
-  Widget build(BuildContext context) =>
-      ContextMenuOverlay(child: const TestContent(title: "Default Menus"));
+  Widget build(BuildContext context) => ContextMenuOverlay(child: const TestContent(title: "Default Menus"));
 }
 
 class StyledMenuTests extends StatelessWidget {
