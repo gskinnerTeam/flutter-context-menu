@@ -35,7 +35,7 @@ class DefaultMenuTests extends StatelessWidget {
   const DefaultMenuTests({super.key});
 
   @override
-  Widget build(BuildContext context) => const TestContent(title: "Default Menus");
+  Widget build(BuildContext context) => ContextMenuOverlay(child: const TestContent(title: "Default Menus"));
 }
 
 class StyledMenuTests extends StatelessWidget {
@@ -103,6 +103,11 @@ class TestContent extends StatelessWidget {
         children: [
           /// Example menu for non-selectable text
           ContextMenuRegion(
+            behavior: const [
+              ContextMenuShowBehavior.secondaryTap,
+              ContextMenuShowBehavior.longPress,
+              ContextMenuShowBehavior.tap
+            ],
             contextMenu: TextContextMenu(data: title),
             child: Text(title, style: const TextStyle(fontSize: 32)),
           ),
