@@ -12,19 +12,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ContextMenuOverlay(
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(primarySwatch: Colors.blue),
-        home: const Scaffold(
-          body: SafeArea(
-            child: Column(
-              children: [
-                Expanded(child: DefaultMenuTests()),
-                Expanded(child: StyledMenuTests()),
-                Expanded(child: CustomMenuTests()),
-              ],
-            ),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: const Scaffold(
+        body: SafeArea(
+          child: Column(
+            children: [
+              Expanded(child: DefaultMenuTests()),
+              Expanded(child: StyledMenuTests()),
+              Expanded(child: CustomMenuTests()),
+            ],
           ),
         ),
       ),
@@ -37,7 +35,7 @@ class DefaultMenuTests extends StatelessWidget {
   const DefaultMenuTests({super.key});
 
   @override
-  Widget build(BuildContext context) => ContextMenuOverlay(child: const TestContent(title: "Default Menus"));
+  Widget build(BuildContext context) => const TestContent(title: "Default Menus");
 }
 
 class StyledMenuTests extends StatelessWidget {
@@ -120,10 +118,7 @@ class TestContent extends StatelessWidget {
 
           /// Custom Context Menu for an Image
           ContextMenuRegion(
-            behavior: const [
-              ContextMenuShowBehavior.secondaryTap,
-              ContextMenuShowBehavior.longPress
-            ],
+            behavior: const [ContextMenuShowBehavior.secondaryTap, ContextMenuShowBehavior.longPress],
             contextMenu: GenericContextMenu(
               buttonConfigs: [
                 ContextMenuButtonConfig(

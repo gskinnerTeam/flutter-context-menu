@@ -40,9 +40,13 @@ class ContextMenuOverlay extends StatefulWidget {
   @override
   ContextMenuOverlayState createState() => ContextMenuOverlayState();
 
-  static ContextMenuOverlayState of(BuildContext context) =>
-      (context.dependOnInheritedWidgetOfExactType<_InheritedContextMenuOverlay>() as _InheritedContextMenuOverlay)
-          .state;
+  static ContextMenuOverlayState of(BuildContext context) {
+    final state = (context.dependOnInheritedWidgetOfExactType<_InheritedContextMenuOverlay>())?.state;
+    if (state == null) {
+      throw ('No ContextMenuOverlay was found. Check that you have inserted a ContextMenuOverlay above your ContextMenuRegion in the widget tree.');
+    }
+    return state;
+  }
 }
 
 class ContextMenuOverlayState extends State<ContextMenuOverlay> {
