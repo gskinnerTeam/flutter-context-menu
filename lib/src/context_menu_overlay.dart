@@ -41,7 +41,9 @@ class ContextMenuOverlay extends StatefulWidget {
   ContextMenuOverlayState createState() => ContextMenuOverlayState();
 
   static ContextMenuOverlayState of(BuildContext context) {
-    final state = (context.dependOnInheritedWidgetOfExactType<_InheritedContextMenuOverlay>())?.state;
+    final state = (context
+            .dependOnInheritedWidgetOfExactType<_InheritedContextMenuOverlay>())
+        ?.state;
     if (state == null) {
       throw ('No ContextMenuOverlay was found. Check that you have inserted a ContextMenuOverlay above your ContextMenuRegion in the widget tree.');
     }
@@ -63,7 +65,8 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
 
   ContextMenuCardBuilder? get cardBuilder => widget.cardBuilder;
 
-  ContextMenuButtonStyle get buttonStyle => widget.buttonStyle ?? defaultButtonStyle;
+  ContextMenuButtonStyle get buttonStyle =>
+      widget.buttonStyle ?? defaultButtonStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +101,8 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
                       widget.child,
                       // Show the menu?
                       if (menuToShow != null) ...[
-                        Positioned.fill(child: Container(color: Colors.transparent)),
+                        Positioned.fill(
+                            child: Container(color: Colors.transparent)),
 
                         /// Underlay, blocks all taps to the main content.
                         GestureDetector(
@@ -118,7 +122,8 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
                             child: MeasuredSizeWidget(
                               key: ObjectKey(menuToShow),
                               onChange: _handleMenuSizeChanged,
-                              child: IntrinsicWidth(child: IntrinsicHeight(child: menuToShow)),
+                              child: IntrinsicWidth(
+                                  child: IntrinsicHeight(child: menuToShow)),
                             ),
                           ),
                         ),
@@ -163,11 +168,7 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
 
 /// InheritedWidget boilerplate
 class _InheritedContextMenuOverlay extends InheritedWidget {
-  _InheritedContextMenuOverlay({
-    required super.child,
-    required this.state,
-    super.key,
-  });
+  _InheritedContextMenuOverlay({required super.child, required this.state});
 
   final ContextMenuOverlayState state;
 

@@ -1,5 +1,6 @@
 ## 2.0.1
 * Fix for default background color
+* Fix linter warnings: switch to `withValues` from `withOpacity`, remove unused `key` param
 
 ## 2.0.0
 * Add support for Tap behaviours
