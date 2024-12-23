@@ -1,3 +1,6 @@
+## 2.0.1
+* Fix for default background color
+
 ## 2.0.0
 * Add support for Tap behaviours
 * Remove longPress
